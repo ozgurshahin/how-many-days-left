@@ -8,9 +8,9 @@ export default function Home() {
     const calculateDates = () => {
         console.log("log : hadi");
         // LAST DAYS
-        const demir = new Date('08-10-2024');
-        const mert = new Date('02-25-2025');
-        const elgormus = new Date('04-06-2024');
+        const demir = new Date('2024-10-08');
+        const mert = new Date('2025-02-25');
+        const elgormus = new Date('2024-06-04');
         const today = new Date();
 
         // KALAN DAYS
