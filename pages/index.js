@@ -4,11 +4,13 @@ export default function Home() {
     const [demirLeft, setDemirLeft] = useState(0);
     const [mertLeft, setMertLeft] = useState(0);
     const [elgormusLeft, setElgormusLeft] = useState(0);
+    const [coskunLeft, setCoskunLeft] = useState(0);
 
     const calculateDates = () => {
         console.log("log : hadi");
         // LAST DAYS
         const demir = new Date('2024-10-08');
+        const coskun = new Date('2024-08-22');
         const mert = new Date('2025-02-25');
         const elgormus = new Date('2024-06-04');
         const today = new Date();
@@ -17,6 +19,7 @@ export default function Home() {
         let demirLeft = 0;
         let mertLeft = 0;
         let elgormusLeft = 0;
+        let coskunLeft = 0;
 
         // CALCULATE
         if (elgormus > today) {
@@ -31,6 +34,10 @@ export default function Home() {
             mertLeft = Math.ceil((mert.getTime() - today.getTime()) / (1000 * 3600 * 24));
         }
 
+        if (coskun > today) {
+            coskunLeft = Math.ceil((coskun.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        }
+
         console.log("log :", mertLeft);
         console.log("log :", demirLeft);
         console.log("log :", elgormusLeft);
@@ -43,12 +50,14 @@ export default function Home() {
         setDemirLeft(demirLeft);
         setMertLeft(mertLeft);
         setElgormusLeft(elgormusLeft);
+        setCoskunLeft(coskunLeft);
     }, []);
 
     const countdownData = [
         {name: 'MERT', daysLeft: mertLeft},
         {name: 'DEMIR', daysLeft: demirLeft},
         {name: 'ELGORMUS', daysLeft: elgormusLeft},
+        {name: 'COSKUN', daysLeft: coskunLeft},
     ];
 
     return (
