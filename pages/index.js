@@ -56,8 +56,8 @@ export default function Home() {
     const countdownData = [
         {name: 'MERT', daysLeft: mertLeft},
         {name: 'DEMIR', daysLeft: demirLeft},
-        {name: 'ELGORMUS', daysLeft: elgormusLeft},
         {name: 'COSKUN', daysLeft: coskunLeft},
+        {name: 'ELGORMUS', daysLeft: elgormusLeft},
     ];
 
     return (
