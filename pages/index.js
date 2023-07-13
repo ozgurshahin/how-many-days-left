@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
     const [demirLeft, setDemirLeft] = useState(0);
@@ -61,12 +62,17 @@ export default function Home() {
     ];
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#000', color: '#00FF00' }}>
+        <div className={styles.container}>
             <div>
                 {countdownData.map((item) => (
-                    <div key={item.name} style={{ marginBottom: '20px', fontFamily: 'monospace' }}>
-                        <h2 style={{ fontSize: '24px', margin: '0', fontWeight: 'normal' }}>{item.name}</h2>
-                        <h1 style={{ fontSize: '36px', fontWeight: 'bold', margin: '0', letterSpacing: '4px' }}>{item.daysLeft} days left</h1>
+                    <div key={item.name} style={{marginBottom: '20px', fontFamily: 'monospace'}}>
+                        <h2 style={{fontSize: '24px', margin: '0', fontWeight: 'normal'}}>{item.name}</h2>
+                        <h1 style={{
+                            fontSize: '36px',
+                            fontWeight: 'bold',
+                            margin: '0',
+                            letterSpacing: '4px'
+                        }}>{item.daysLeft} days left</h1>
                     </div>
                 ))}
             </div>
