@@ -42,11 +42,11 @@ export default function Home() {
         console.log("log :", demirLeft);
         console.log("log :", elgormusLeft);
 
-        return {demirLeft, mertLeft, elgormusLeft};
+        return {demirLeft, mertLeft, elgormusLeft,coskunLeft};
     };
 
     useEffect(() => {
-        const {demirLeft, mertLeft, elgormusLeft} = calculateDates();
+        const {demirLeft, mertLeft, elgormusLeft,coskunLeft} = calculateDates();
         setDemirLeft(demirLeft);
         setMertLeft(mertLeft);
         setElgormusLeft(elgormusLeft);
