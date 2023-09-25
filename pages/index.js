@@ -59,7 +59,6 @@ export default function Home() {
         {name: 'DEMIR', daysLeft: demirLeft},
         {name: 'COSKUN', daysLeft: coskunLeft},
         {name: 'ELGORMUS', daysLeft: elgormusLeft},
-        {name: 'FATIH', daysLeft: fatihLeft},
     ];
 
     return (
