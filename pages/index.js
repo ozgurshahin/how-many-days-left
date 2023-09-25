@@ -6,7 +6,6 @@ export default function Home() {
     const [mertLeft, setMertLeft] = useState(0);
     const [elgormusLeft, setElgormusLeft] = useState(0);
     const [coskunLeft, setCoskunLeft] = useState(0);
-    const [fatihLeft, setFatihLeft] = useState(0);
 
     const calculateDates = () => {
         console.log("log : hadi");
@@ -15,42 +14,44 @@ export default function Home() {
         const coskun = new Date('2024-08-22');
         const mert = new Date('2025-02-25');
         const elgormus = new Date('2024-06-04');
-        const fatih = new Date('2024-10-10');
         const today = new Date();
 
         // KALAN DAYS
-        let demirLeft;
-        let mertLeft;
-        let elgormusLeft;
-        let coskunLeft;
-        let fatihLeft;
+        let demirLeft = 0;
+        let mertLeft = 0;
+        let elgormusLeft = 0;
+        let coskunLeft = 0;
 
         // CALCULATE
+        if (elgormus > today) {
+            elgormusLeft = Math.ceil((elgormus.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        }
 
-        elgormusLeft = Math.ceil((elgormus.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        if (demir > today) {
+            demirLeft = Math.ceil((demir.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        }
 
-        demirLeft = Math.ceil((demir.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        if (mert > today) {
+            mertLeft = Math.ceil((mert.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        }
 
-        mertLeft = Math.ceil((mert.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        if (coskun > today) {
+            coskunLeft = Math.ceil((coskun.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        }
 
-        coskunLeft = Math.ceil((coskun.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        console.log("log :", mertLeft);
+        console.log("log :", demirLeft);
+        console.log("log :", elgormusLeft);
 
-        fatihLeft = Math.ceil((fatih.getTime() - today.getTime()) / (1000 * 3600 * 24));
-
-        // console.log("log :", mertLeft);
-        // console.log("log :", demirLeft);
-        // console.log("log :", elgormusLeft);
-
-        return {demirLeft, mertLeft, elgormusLeft,coskunLeft,fatihLeft};
+        return {demirLeft, mertLeft, elgormusLeft,coskunLeft};
     };
 
     useEffect(() => {
-        const {demirLeft, mertLeft, elgormusLeft,coskunLeft, fatihLeft} = calculateDates();
+        const {demirLeft, mertLeft, elgormusLeft,coskunLeft} = calculateDates();
         setDemirLeft(demirLeft);
         setMertLeft(mertLeft);
         setElgormusLeft(elgormusLeft);
         setCoskunLeft(coskunLeft);
-        setFatihLeft(fatihLeft);
     }, []);
 
     const countdownData = [
@@ -72,9 +73,7 @@ export default function Home() {
                             fontWeight: 'bold',
                             margin: '0',
                             letterSpacing: '4px'
-                        }}>
-                            {Math.abs(item.daysLeft)} {item.daysLeft < 0 ? 'days ago was eligible to apply for IRL' : 'days left'}
-                        </h1>
+                        }}>{item.daysLeft} days left</h1>
                     </div>
                 ))}
             </div>
