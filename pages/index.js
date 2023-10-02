@@ -6,6 +6,7 @@ export default function Home() {
     const [mertLeft, setMertLeft] = useState(0);
     const [elgormusLeft, setElgormusLeft] = useState(0);
     const [coskunLeft, setCoskunLeft] = useState(0);
+    const [tanyaLeft, setTanyaLeft] = useState(0);
 
     const calculateDates = () => {
         console.log("log : hadi");
@@ -14,6 +15,7 @@ export default function Home() {
         const coskun = new Date('2024-08-22');
         const mert = new Date('2025-02-25');
         const elgormus = new Date('2024-06-04');
+        const tanya = new Date('2024-02-28');
         const today = new Date();
 
         // KALAN DAYS
@@ -21,6 +23,7 @@ export default function Home() {
         let mertLeft = 0;
         let elgormusLeft = 0;
         let coskunLeft = 0;
+        let tanyaLeft = 0;
 
         // CALCULATE
         if (elgormus > today) {
@@ -39,19 +42,25 @@ export default function Home() {
             coskunLeft = Math.ceil((coskun.getTime() - today.getTime()) / (1000 * 3600 * 24));
         }
 
+
+        if (tanya > today) {
+            tanyaLeft = Math.ceil((tanya.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        }
+
         console.log("log :", mertLeft);
         console.log("log :", demirLeft);
         console.log("log :", elgormusLeft);
 
-        return {demirLeft, mertLeft, elgormusLeft,coskunLeft};
+        return {demirLeft, mertLeft, elgormusLeft,coskunLeft,tanyaLeft};
     };
 
     useEffect(() => {
-        const {demirLeft, mertLeft, elgormusLeft,coskunLeft} = calculateDates();
+        const {demirLeft, mertLeft, elgormusLeft,coskunLeft,tanyaLeft} = calculateDates();
         setDemirLeft(demirLeft);
         setMertLeft(mertLeft);
         setElgormusLeft(elgormusLeft);
         setCoskunLeft(coskunLeft);
+        setTanyaLeft(tanyaLeft);
     }, []);
 
     const countdownData = [
@@ -59,6 +68,7 @@ export default function Home() {
         {name: 'DEMIR', daysLeft: demirLeft},
         {name: 'COSKUN', daysLeft: coskunLeft},
         {name: 'ELGORMUS', daysLeft: elgormusLeft},
+        {name: 'tanya', daysLeft: tanyaLeft},
     ];
 
     return (
