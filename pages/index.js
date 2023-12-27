@@ -11,7 +11,7 @@ export default function Home() {
     const calculateDates = () => {
         console.log("log : hadi");
         // LAST DAYS
-        const demir = new Date('2024-10-08');
+        const demir = new Date('2024-09-01');
         const coskun = new Date('2024-08-22');
         const mert = new Date('2025-02-25');
         const elgormus = new Date('2024-06-04');
