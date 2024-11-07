@@ -85,7 +85,7 @@ export default function Home() {
                             margin: '0',
                             letterSpacing: '4px'
                         }}>
-                            {Math.abs(item.daysLeft)} days {item.daysLeft >= 0 ? 'left' : 'passed'}
+                            {Math.abs(item.daysLeft)} days {item.daysLeft >= 0 ? 'passed' : 'left'}
                         </h1>
                     </div>
                 ))}
