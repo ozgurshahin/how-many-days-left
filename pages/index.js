@@ -2,76 +2,49 @@ import {useEffect, useState} from 'react';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
-    const [demirLeft, setDemirLeft] = useState(0);
-    const [mertLeft, setMertLeft] = useState(0);
-    const [elgormusLeft, setElgormusLeft] = useState(0);
-    const [coskunLeft, setCoskunLeft] = useState(0);
-    const [tanyaLeft, setTanyaLeft] = useState(0);
+    const [countdownData, setCountdownData] = useState([]);
 
     const calculateDates = () => {
-        console.log("log : hadi");
-        // LAST DAYS
-        const demir = new Date('2024-09-01');
-        const coskun = new Date('2024-08-22');
+        const demir = new Date('2024-11-02');
+        const coskun = new Date('2024-09-19');
         const mert = new Date('2025-02-25');
-        const elgormus = new Date('2024-06-04');
+        // const elgormus = new Date('2024-06-04');
+        const elgormus = null;
         const tanya = new Date('2024-03-05');
         const today = new Date();
 
-        // KALAN DAYS
-        let demirLeft = 0;
-        let mertLeft = 0;
-        let elgormusLeft = 0;
-        let coskunLeft = 0;
-        let tanyaLeft;
+        const calculateDaysLeft = (date) => {
+            if (date == null) {
+                return {
+                    daysLeft: null,
+                    status: 'An application for ILR has not been submitted.'
+                };
+            }
+            if (date > today) {
+                return {
+                    daysLeft: Math.ceil((date.getTime() - today.getTime()) / (1000 * 3600 * 24)),
+                    status: 'left.'
+                };
+            } else {
+                return {
+                    daysLeft: Math.floor((today.getTime() - date.getTime()) / (1000 * 3600 * 24)),
+                    status: 'passed.'
+                };
+            }
+        };
 
-        // CALCULATE
-        if (elgormus > today) {
-            elgormusLeft = Math.ceil((elgormus.getTime() - today.getTime()) / (1000 * 3600 * 24));
-        }
-
-        if (demir > today) {
-            demirLeft = Math.ceil((demir.getTime() - today.getTime()) / (1000 * 3600 * 24));
-        }
-
-        if (mert > today) {
-            mertLeft = Math.ceil((mert.getTime() - today.getTime()) / (1000 * 3600 * 24));
-        }
-
-        if (coskun > today) {
-            coskunLeft = Math.ceil((coskun.getTime() - today.getTime()) / (1000 * 3600 * 24));
-        }
-
-
-        if (tanya > today) {
-            tanyaLeft = Math.ceil((tanya.getTime() - today.getTime()) / (1000 * 3600 * 24));
-        } else {
-            tanyaLeft = Math.floor((today.getTime() - tanya.getTime()) / (1000 * 3600 * 24));
-        }
-
-        console.log("log :", mertLeft);
-        console.log("log :", demirLeft);
-        console.log("log :", elgormusLeft);
-
-        return {demirLeft, mertLeft, elgormusLeft,coskunLeft,tanyaLeft};
+        return [
+            {name: 'MERT', ...calculateDaysLeft(mert)},
+            {name: 'DEMIR', ...calculateDaysLeft(demir)},
+            {name: 'COSKUN', ...calculateDaysLeft(coskun)},
+            {name: 'ELGORMUS', ...calculateDaysLeft(elgormus)},
+            {name: 'TANYA', ...calculateDaysLeft(tanya)}
+        ];
     };
 
     useEffect(() => {
-        const {demirLeft, mertLeft, elgormusLeft,coskunLeft,tanyaLeft} = calculateDates();
-        setDemirLeft(demirLeft);
-        setMertLeft(mertLeft);
-        setElgormusLeft(elgormusLeft);
-        setCoskunLeft(coskunLeft);
-        setTanyaLeft(tanyaLeft);
+        setCountdownData(calculateDates());
     }, []);
-
-    const countdownData = [
-        {name: 'MERT', daysLeft: mertLeft},
-        {name: 'DEMIR', daysLeft: demirLeft},
-        {name: 'COSKUN', daysLeft: coskunLeft},
-        {name: 'ELGORMUS', daysLeft: elgormusLeft},
-        {name: 'tanya', daysLeft: tanyaLeft},
-    ];
 
     return (
         <div className={styles.container}>
@@ -85,7 +58,7 @@ export default function Home() {
                             margin: '0',
                             letterSpacing: '4px'
                         }}>
-                            {Math.abs(item.daysLeft)} days {item.daysLeft >= 0 ? 'passed' : 'left'}
+                            {item.daysLeft !== null ? `${Math.abs(item.daysLeft)} days -  ${item.status}` : item.status}
                         </h1>
                     </div>
                 ))}
