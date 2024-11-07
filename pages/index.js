@@ -38,7 +38,7 @@ export default function Home() {
             {name: 'DEMIR', ...calculateDaysLeft(demir)},
             {name: 'COSKUN', ...calculateDaysLeft(coskun)},
             {name: 'ELGORMUS', ...calculateDaysLeft(elgormus)},
-            {name: 'TANYA', ...calculateDaysLeft(tanya)}
+            {name: 'ALMIRA BIRTHDAY', ...calculateDaysLeft(tanya)}
         ];
     };
 
