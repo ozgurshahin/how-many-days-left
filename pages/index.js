@@ -15,7 +15,7 @@ export default function Home() {
         const coskun = new Date('2024-08-22');
         const mert = new Date('2025-02-25');
         const elgormus = new Date('2024-06-04');
-        const tanya = new Date('2024-02-28');
+        const tanya = new Date('2024-03-05');
         const today = new Date();
 
         // KALAN DAYS
@@ -23,7 +23,7 @@ export default function Home() {
         let mertLeft = 0;
         let elgormusLeft = 0;
         let coskunLeft = 0;
-        let tanyaLeft = 0;
+        let tanyaLeft;
 
         // CALCULATE
         if (elgormus > today) {
@@ -45,6 +45,8 @@ export default function Home() {
 
         if (tanya > today) {
             tanyaLeft = Math.ceil((tanya.getTime() - today.getTime()) / (1000 * 3600 * 24));
+        } else {
+            tanyaLeft = Math.floor((today.getTime() - tanya.getTime()) / (1000 * 3600 * 24));
         }
 
         console.log("log :", mertLeft);
