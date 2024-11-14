@@ -7,7 +7,7 @@ export default function Home() {
     const calculateDates = () => {
         const demir = new Date('2024-11-02');
         const coskun = new Date('2024-09-19');
-        const mert = new Date('2025-02-25');
+        const mert = new Date('2025-01-20');
         // const elgormus = new Date('2024-06-04');
         const elgormus = null;
         const tanya = new Date('2024-03-05');
