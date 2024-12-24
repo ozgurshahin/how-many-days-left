@@ -8,10 +8,10 @@ export default function Home() {
         const demir = new Date('2024-11-02');
         const mert = new Date('2025-01-20');
         const elgormus = null;
-        const tanya = new Date('2024-03-05');
+        const tanya = new Date('2024-03-05'); // Almira's birthday
         const today = new Date();
 
-        const calculateDaysLeft = (date) => {
+        const calculateDaysLeft = (date, name) => {
             if (date == null) {
                 return {
                     daysLeft: null,
@@ -24,18 +24,19 @@ export default function Home() {
                     status: 'left.'
                 };
             } else {
+                // Check if the event is "ALMIRA BIRTHDAY" and avoid showing "passed."
                 return {
                     daysLeft: Math.floor((today.getTime() - date.getTime()) / (1000 * 3600 * 24)),
-                    status: 'passed.'
+                    status: name === 'ALMIRA BIRTHDAY' ? '' : 'passed.'
                 };
             }
         };
 
         return [
-            { name: 'MERT', ...calculateDaysLeft(mert) },
-            { name: 'DEMIR', ...calculateDaysLeft(demir) },
-            { name: 'ELGORMUS', ...calculateDaysLeft(elgormus) },
-            { name: 'ALMIRA BIRTHDAY', ...calculateDaysLeft(tanya) }
+            { name: 'MERT', ...calculateDaysLeft(mert, 'MERT') },
+            { name: 'DEMIR', ...calculateDaysLeft(demir, 'DEMIR') },
+            { name: 'ELGORMUS', ...calculateDaysLeft(elgormus, 'ELGORMUS') },
+            { name: 'ALMIRA BIRTHDAY', ...calculateDaysLeft(tanya, 'ALMIRA BIRTHDAY') }
         ];
     };
 
@@ -55,7 +56,7 @@ export default function Home() {
                             margin: '0',
                             letterSpacing: '4px'
                         }}>
-                            {item.daysLeft !== null ? `${Math.abs(item.daysLeft)} days -  ${item.status}` : item.status}
+                            {item.daysLeft !== null ? `${Math.abs(item.daysLeft)} days - ${item.status}` : item.status}
                         </h1>
                     </div>
                 ))}
@@ -71,7 +72,7 @@ export default function Home() {
                 color: '#ffffff', // Metin rengi beyaz
                 fontFamily: 'monospace'
             }}>
-                <h4 style={{ margin: '0', fontSize: '16px', fontWeight: 'bold' }}>Examples of the number of days between fingerprint submission and ILR result.:</h4>
+                <h4 style={{ margin: '0', fontSize: '16px', fontWeight: 'bold' }}>Examples of the number of days between fingerprint submission and ILR result:</h4>
                 <p style={{ margin: '0', fontSize: '14px' }}>1st Example: Fingerprint Date: 06/09/2024 | ILR Decision Date: 04/12/2024 | Total Days Passed: 89</p>
                 <p style={{ margin: '0', fontSize: '14px' }}>2nd Example: Fingerprint Date: 19/09/2024 | ILR Decision Date: 14/12/2024 | Total Days Passed: 86</p>
             </div>
