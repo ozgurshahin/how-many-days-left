@@ -6,7 +6,7 @@ export default function Home() {
 
     const calculateDates = () => {
         const demir = new Date('2024-11-02');
-        const mert = new Date('2025-01-20');
+        const mert = new Date('2025-01-24');
         const elgormus = new Date('2025-01-22');
         const tanya = new Date('2024-03-05'); // Almira's birthday
         const today = new Date();
