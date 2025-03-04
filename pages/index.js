@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
     const [countdownData, setCountdownData] = useState([]);
 
     const calculateDates = () => {
-        const demir = new Date('2024-11-02');
+        const demir = new Date('2025-03-03');
         const mert = new Date('2025-01-24');
-        const elgormus = new Date('2025-01-22');
+        const elgormus = new Date('2024-12-27');
         const tanya = new Date('2024-03-05'); // Almira's birthday
         const today = new Date();
 
