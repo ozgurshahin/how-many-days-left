@@ -5,7 +5,7 @@ export default function Home() {
     const [countdownData, setCountdownData] = useState([]);
 
     const calculateDates = () => {
-        const demir = new Date('2025-03-03');
+        const demir = new Date('2026-03-03');
         const mert = new Date('2025-01-24');
         const elgormus = new Date('2024-12-27');
         const tanya = new Date('2024-03-05'); // Almira's birthday
@@ -33,9 +33,9 @@ export default function Home() {
         };
 
         return [
+            { name: 'OZGUR', ...calculateDaysLeft(demir, 'DEMIR') },
             { name: 'MERT', ...calculateDaysLeft(mert, 'MERT') },
-            { name: 'DEMIR', ...calculateDaysLeft(demir, 'DEMIR') },
-            { name: 'ELGORMUS', ...calculateDaysLeft(elgormus, 'ELGORMUS') },
+            { name: 'OGUZHAN', ...calculateDaysLeft(elgormus, 'ELGORMUS') },
             { name: 'ALMIRA BIRTHDAY', ...calculateDaysLeft(tanya, 'ALMIRA BIRTHDAY') }
         ];
     };
