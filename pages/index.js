@@ -1,7 +1,6 @@
 const quotes = require('../public/quotes.json');
 import {useEffect, useState} from 'react';
 import styles from '../styles/Home.module.css';
-
 // Modularized: calculateDaysLeft moved to top-level
 const calculateDaysLeft = (date, name) => {
     const today = new Date();
@@ -56,11 +55,29 @@ export default function Home() {
         const containerWidth = window.innerWidth;
         const containerHeight = window.innerHeight;
 
+        const cardWidth = containerWidth < 600 ? 240 : 300;
+        const cardHeight = containerWidth < 600 ? 140 : 180;
+        const padding = 20;
+
+        const placedCards = [];
+
         data.forEach((item) => {
-            initialPositions[item.name] = {
-                x: Math.floor(Math.random() * (containerWidth - 300)),
-                y: Math.floor(Math.random() * (containerHeight - 200))
-            };
+          let x, y;
+          let overlaps;
+          let attempts = 0;
+
+          do {
+            x = Math.floor(Math.random() * (containerWidth - cardWidth - padding));
+            y = Math.floor(Math.random() * (containerHeight - cardHeight - padding));
+            overlaps = placedCards.some(pos =>
+              Math.abs(pos.x - x) < cardWidth + padding &&
+              Math.abs(pos.y - y) < cardHeight + padding
+            );
+            attempts++;
+          } while (overlaps && attempts < 200);
+
+          placedCards.push({ x, y });
+          initialPositions[item.name] = { x, y };
         });
 
         setPositions(initialPositions);
@@ -68,6 +85,10 @@ export default function Home() {
 
     const handleMouseDown = (e, id) => {
         setDraggingId(id);
+    };
+
+    const handleTouchStart = (e, id) => {
+      setDraggingId(id);
     };
 
     const handleMouseMove = (e) => {
@@ -82,8 +103,25 @@ export default function Home() {
         }
     };
 
+    const handleTouchMove = (e) => {
+      if (draggingId !== null) {
+        const touch = e.touches[0];
+        setPositions(prev => ({
+          ...prev,
+          [draggingId]: {
+            x: touch.clientX - 140,
+            y: touch.clientY - 70
+          }
+        }));
+      }
+    };
+
     const handleMouseUp = () => {
         setDraggingId(null);
+    };
+
+    const handleTouchEnd = () => {
+      setDraggingId(null);
     };
 
     if (!acknowledged) {
@@ -146,6 +184,8 @@ export default function Home() {
         <div className={styles.container}
              onMouseMove={handleMouseMove}
              onMouseUp={handleMouseUp}
+             onTouchMove={handleTouchMove}
+             onTouchEnd={handleTouchEnd}
              style={{
                  position: 'relative',
                  height: '100vh',
@@ -157,18 +197,22 @@ export default function Home() {
                 <div
                     key={item.name}
                     onMouseDown={(e) => handleMouseDown(e, item.name)}
+                    onTouchStart={(e) => handleTouchStart(e, item.name)}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
                     style={{
                         position: 'absolute',
                         left: positions[item.name]?.x || 100,
                         top: positions[item.name]?.y || index * 160 + 100,
                         backgroundColor: '#fff',
                         borderRadius: '12px',
-                        padding: '28px',
-                        minWidth: '280px',
-                        fontSize: '18px',
+                        padding: '20px',
+                        minWidth: window.innerWidth < 600 ? '220px' : '280px',
+                        fontSize: '16px',
                         boxShadow: '0 6px 12px rgba(0, 0, 0, 0.12)',
                         textAlign: 'center',
-                        cursor: 'grab'
+                        cursor: 'grab',
+                        touchAction: 'none'
                     }}>
                     <h2 style={{
                         fontSize: '20px',
