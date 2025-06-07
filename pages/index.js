@@ -1,3 +1,4 @@
+const quotes = require('../public/quotes.json');
 import {useEffect, useState} from 'react';
 import styles from '../styles/Home.module.css';
 
@@ -41,8 +42,13 @@ export default function Home() {
     const [countdownData, setCountdownData] = useState([]);
     const [positions, setPositions] = useState({});
     const [draggingId, setDraggingId] = useState(null);
+    const [quote, setQuote] = useState('');
+    const [acknowledged, setAcknowledged] = useState(false);
 
     useEffect(() => {
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        setQuote(`${randomQuote.content} — ${randomQuote.author}`);
+
         const data = getCountdownData();
         setCountdownData(data);
 
@@ -79,6 +85,62 @@ export default function Home() {
     const handleMouseUp = () => {
         setDraggingId(null);
     };
+
+    if (!acknowledged) {
+        return (
+            <>
+              <style jsx global>{`
+                @keyframes fadeIn {
+                  from { opacity: 0; transform: translateY(20px); }
+                  to { opacity: 1; transform: translateY(0); }
+                }
+              `}</style>
+              <div className={styles.container} style={{
+                padding: '40px',
+                fontFamily: 'Georgia, serif',
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                background: 'linear-gradient(to right, #f0f2f5, #ffffff)'
+              }}>
+                <div style={{
+                  fontSize: '22px',
+                  fontStyle: 'italic',
+                  marginBottom: '40px',
+                  maxWidth: '700px',
+                  lineHeight: '1.6',
+                  color: '#2c3e50',
+                  textAlign: 'center',
+                  backgroundColor: '#ecf0f1',
+                  padding: '20px 30px',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  animation: 'fadeIn 1s ease-in'
+                }}>
+                  {quote ? quote : 'Yükleniyor...'}
+                </div>
+                <button
+                  onClick={() => setAcknowledged(true)}
+                  style={{
+                    padding: '12px 30px',
+                    fontSize: '16px',
+                    borderRadius: '8px',
+                    backgroundColor: '#3498db',
+                    color: '#fff',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.3s ease',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                  }}
+                >
+                  Okudum, anladım
+                </button>
+              </div>
+            </>
+        );
+    }
 
     return (
         <div className={styles.container}
