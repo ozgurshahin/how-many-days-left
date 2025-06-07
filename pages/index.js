@@ -1,80 +1,88 @@
 import {useEffect, useState} from 'react';
 import styles from '../styles/Home.module.css';
 
+// Modularized: calculateDaysLeft moved to top-level
+const calculateDaysLeft = (date, name) => {
+    const today = new Date();
+    if (date == null) {
+        return {
+            daysLeft: null,
+            status: 'An application for ILR has not been submitted.'
+        };
+    }
+    if (date > today) {
+        return {
+            daysLeft: Math.ceil((date.getTime() - today.getTime()) / (1000 * 3600 * 24)),
+            status: 'left.'
+        };
+    } else {
+        return {
+            daysLeft: Math.floor((today.getTime() - date.getTime()) / (1000 * 3600 * 24)),
+            status: name === 'ALMIRA BIRTHDAY' ? '' : 'passed.'
+        };
+    }
+};
+
+// Renamed and refactored: getCountdownData
+const getCountdownData = () => {
+    const dates = [
+        {name: 'OZGUR', date: new Date('2026-03-03'), label: 'DEMIR'},
+        {name: 'MERT', date: new Date('2025-01-24'), label: 'MERT'},
+        {name: 'OGUZHAN', date: new Date('2024-12-27'), label: 'ELGORMUS'},
+        {name: 'ALMIRA BIRTHDAY', date: new Date('2024-03-05'), label: 'ALMIRA BIRTHDAY'}
+    ];
+    return dates.map(({name, date, label}) => ({
+        name,
+        ...calculateDaysLeft(date, label)
+    }));
+};
+
 export default function Home() {
     const [countdownData, setCountdownData] = useState([]);
 
-    const calculateDates = () => {
-        const demir = new Date('2026-03-03');
-        const mert = new Date('2025-01-24');
-        const elgormus = new Date('2024-12-27');
-        const tanya = new Date('2024-03-05'); // Almira's birthday
-        const today = new Date();
-
-        const calculateDaysLeft = (date, name) => {
-            if (date == null) {
-                return {
-                    daysLeft: null,
-                    status: 'An application for ILR has not been submitted.'
-                };
-            }
-            if (date > today) {
-                return {
-                    daysLeft: Math.ceil((date.getTime() - today.getTime()) / (1000 * 3600 * 24)),
-                    status: 'left.'
-                };
-            } else {
-                // Check if the event is "ALMIRA BIRTHDAY" and avoid showing "passed."
-                return {
-                    daysLeft: Math.floor((today.getTime() - date.getTime()) / (1000 * 3600 * 24)),
-                    status: name === 'ALMIRA BIRTHDAY' ? '' : 'passed.'
-                };
-            }
-        };
-
-        return [
-            { name: 'OZGUR', ...calculateDaysLeft(demir, 'DEMIR') },
-            { name: 'MERT', ...calculateDaysLeft(mert, 'MERT') },
-            { name: 'OGUZHAN', ...calculateDaysLeft(elgormus, 'ELGORMUS') },
-            { name: 'ALMIRA BIRTHDAY', ...calculateDaysLeft(tanya, 'ALMIRA BIRTHDAY') }
-        ];
-    };
-
     useEffect(() => {
-        setCountdownData(calculateDates());
+        setCountdownData(getCountdownData());
     }, []);
 
     return (
-        <div className={styles.container}>
-            <div>
+        <div className={styles.container}
+             style={{padding: '40px', fontFamily: 'monospace', backgroundColor: '#f4f4f4'}}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '24px',
+                width: '100%',
+                margin: '0 auto'
+            }}>
                 {countdownData.map((item) => (
-                    <div key={item.name} style={{ marginBottom: '20px', fontFamily: 'monospace' }}>
-                        <h2 style={{ fontSize: '24px', margin: '0', fontWeight: 'normal' }}>{item.name}</h2>
+                    <div key={item.name} style={{
+                        backgroundColor: '#fff',
+                        borderRadius: '12px',
+                        padding: '28px',
+                        marginBottom: '24px',
+                        minWidth: '280px',
+                        fontSize: '18px',
+                        boxShadow: '0 6px 12px rgba(0, 0, 0, 0.12)',
+                        textAlign: 'center',
+                        transition: 'transform 0.3s ease',
+                    }}>
+                        <h2 style={{
+                            fontSize: '20px',
+                            margin: '0 0 10px 0',
+                            fontWeight: '600',
+                            color: '#333'
+                        }}>{item.name}</h2>
                         <h1 style={{
-                            fontSize: '36px',
+                            fontSize: '28px',
                             fontWeight: 'bold',
                             margin: '0',
-                            letterSpacing: '4px'
+                            color: item.status === 'left.' ? '#28a745' : '#dc3545'
                         }}>
-                            {item.daysLeft !== null ? `${Math.abs(item.daysLeft)} days - ${item.status}` : item.status}
+                            {item.daysLeft !== null ? `${Math.abs(item.daysLeft)} days ${item.status}` : item.status}
                         </h1>
                     </div>
                 ))}
-            </div>
-            <div style={{
-                position: 'fixed',
-                bottom: '20px',
-                right: '20px',
-                backgroundColor: '#333333', // Koyu arka plan
-                padding: '10px',
-                borderRadius: '8px',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.5)', // Daha yumuşak gölge
-                color: '#ffffff', // Metin rengi beyaz
-                fontFamily: 'monospace'
-            }}>
-                <h4 style={{ margin: '0', fontSize: '16px', fontWeight: 'bold' }}>Examples of the number of days between fingerprint submission and ILR result:</h4>
-                <p style={{ margin: '0', fontSize: '14px' }}>1st Example: Fingerprint Date: 06/09/2024 | ILR Decision Date: 04/12/2024 | Total Days Passed: 89</p>
-                <p style={{ margin: '0', fontSize: '14px' }}>2nd Example: Fingerprint Date: 19/09/2024 | ILR Decision Date: 14/12/2024 | Total Days Passed: 86</p>
             </div>
         </div>
     );
