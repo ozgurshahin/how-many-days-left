@@ -29,6 +29,7 @@ const getCountdownData = () => {
         {name: 'OZGUR', date: new Date('2026-03-03'), label: 'DEMIR'},
         {name: 'MERT', date: new Date('2025-05-20'), label: 'MERT'},
         {name: 'OGUZHAN', date: new Date('2026-04-16'), label: 'ELGORMUS'},
+        {name: 'ALIMRA PASAPORT', date: new Date('2025-06-21'), label: 'ALIMRA PASAPORT'},
         {name: 'ALMIRA BIRTHDAY', date: new Date('2024-03-05'), label: 'ALMIRA BIRTHDAY'}
     ];
     return dates.map(({name, date, label}) => ({
