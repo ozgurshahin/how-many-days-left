@@ -5,23 +5,32 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy:
+  ci-cd:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: ✅ Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: 🧠 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
+      - name: 📦 Install dependencies
+        run: npm ci
 
-      - name: Build app
+      - name: 🧹 Run lint checks
+        run: npm run lint
+
+      - name: 🧪 Run tests
+        run: npm test
+
+      - name: 🎨 Run Prettier formatting check
+        run: npx prettier . --check
+
+      - name: 🏗️ Build app
         run: npm run build
 
-      - name: Deploy to Vercel
+      - name: 🚀 Deploy to Vercel
         run: npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
