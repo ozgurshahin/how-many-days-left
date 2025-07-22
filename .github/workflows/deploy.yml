@@ -15,7 +15,15 @@ jobs:
       - name: 🧠 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "22"
+
+      - name: 🧾 Show Node & NPM versions
+        run: |
+          node --version
+          npm --version
+
+      - name: 📂 Show file structure
+        run: ls -la
 
       - name: 📦 Install dependencies
         run: npm ci
