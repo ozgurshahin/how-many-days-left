@@ -1,15 +1,15 @@
-const nextJest = require('next/jest')
+const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
-    dir: './',
-})
+    dir: "./",
+});
 
 const customJestConfig = {
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+    setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
     moduleNameMapper: {
-        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+        "\\.(css|less|scss|sass)$": "identity-obj-proxy",
     },
-    testEnvironment: 'jsdom',
-}
+    testEnvironment: "jsdom",
+};
 
-module.exports = createJestConfig(customJestConfig)
+module.exports = createJestConfig(customJestConfig);
