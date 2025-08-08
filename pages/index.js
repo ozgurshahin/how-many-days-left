@@ -226,52 +226,70 @@ export default function Home() {
         backgroundColor: "#f4f4f4",
       }}
     >
-      {countdownData.map((item, index) => (
-        <div
-          key={item.name}
-          onMouseDown={(e) => handleMouseDown(e, item.name)}
-          onTouchStart={(e) => handleTouchStart(e, item.name)}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          style={{
-            position: "absolute",
-            left: positions[item.name]?.x || 100,
-            top: positions[item.name]?.y || index * 160 + 100,
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            padding: "20px",
-            minWidth: window.innerWidth < 600 ? "220px" : "280px",
-            fontSize: "16px",
-            boxShadow: "0 6px 12px rgba(0, 0, 0, 0.12)",
-            textAlign: "center",
-            cursor: "grab",
-            touchAction: "none",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: "20px",
-              margin: "0 0 10px 0",
-              fontWeight: "600",
-              color: "#333",
-            }}
-          >
-            {item.name}
-          </h2>
-          <h1
-            style={{
-              fontSize: "28px",
-              fontWeight: "bold",
-              margin: "0",
-              color: item.status === "left." ? "#28a745" : "#dc3545",
-            }}
-          >
-            {item.daysLeft !== null
-              ? `${Math.abs(item.daysLeft)} days ${item.status}`
-              : item.status}
-          </h1>
-        </div>
-      ))}
+        {countdownData.map((item, index) => {
+  const isMert = item.name === "Mert’s British now!";
+  return (
+    <div
+      key={item.name}
+      onMouseDown={(e) => handleMouseDown(e, item.name)}
+      onTouchStart={(e) => handleTouchStart(e, item.name)}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{
+        position: "absolute",
+        left: positions[item.name]?.x || 100,
+        top: positions[item.name]?.y || index * 160 + 100,
+        backgroundColor: "#fff",
+        backgroundImage: isMert
+          ? "url('https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/2560px-Flag_of_the_United_Kingdom.svg.png')"
+          : "none",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        borderRadius: "12px",
+        padding: "20px",
+        minWidth: window.innerWidth < 600 ? "220px" : "280px",
+        fontSize: "16px",
+        boxShadow: "0 6px 12px rgba(0, 0, 0, 0.12)",
+        textAlign: "center",
+        cursor: "grab",
+        touchAction: "none",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center", // metni dikey ortala
+        alignItems: "center", // metni yatay ortala
+        height: "180px", // ortada konumlanması için sabit yükseklik
+        color: "#000", // Mert için siyah
+      }}
+    >
+      <h2
+        style={{
+          fontSize: "20px",
+          margin: "0 0 -8px 0",
+          fontWeight: "600",
+          color: isMert ? "#000" : "#333",
+        }}
+      >
+        {item.name}
+      </h2>
+      <h1
+        style={{
+          fontSize: "28px",
+          fontWeight: "bold",
+          margin: "0",
+          color: isMert
+            ? "#000"
+            : item.status === "left."
+            ? "#28a745"
+            : "#dc3545",
+        }}
+      >
+        {item.daysLeft !== null
+          ? `${Math.abs(item.daysLeft)} days ${item.status}`
+          : item.status}
+      </h1>
+    </div>
+  );
+})}
     </div>
   );
 }
