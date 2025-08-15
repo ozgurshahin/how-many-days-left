@@ -39,8 +39,8 @@ const getCountdownData = () => {
     },
     { name: "OGUZHAN", date: new Date("2026-04-16"), label: "ELGORMUS" },
     {
-      name: "ALIMRA PASAPORT",
-      date: new Date("2025-06-21"),
+      name: "Almira’s British now!",
+      date: new Date("2025-08-15"),
       label: "ALIMRA PASAPORT",
     },
     {
@@ -290,12 +290,13 @@ export default function Home() {
 
       {countdownData.map((item, index) => {
         const isMert = item.name === "Mert’s British now!";
+        const isAlmira = item.name === "Almira’s British now!";
         const baseCardStyle = {
           position: "absolute",
           left: positions[item.name]?.x || 100,
           top: positions[item.name]?.y || index * 160 + 100,
           backgroundColor: "#fff",
-          backgroundImage: isMert
+          backgroundImage: isMert || isAlmira
             ? "url('https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/2560px-Flag_of_the_United_Kingdom.svg.png')"
             : "none",
           backgroundSize: "cover",
@@ -343,7 +344,7 @@ export default function Home() {
                 fontSize: "20px",
                 margin: "0 0 -8px 0", // iki satır arası dar
                 fontWeight: "600",
-                color: isMert ? "#000" : "#333",
+                color: isMert || isAlmira ? "#000" : "#333",
               }}
             >
               {item.name}
@@ -353,7 +354,7 @@ export default function Home() {
                 fontSize: "28px",
                 fontWeight: "bold",
                 margin: "0",
-                color: isMert
+                color: isMert || isAlmira
                   ? "#000"
                   : item.status === "left."
                     ? "#28a745"
