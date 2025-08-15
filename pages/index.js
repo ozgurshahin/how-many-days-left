@@ -296,9 +296,10 @@ export default function Home() {
           left: positions[item.name]?.x || 100,
           top: positions[item.name]?.y || index * 160 + 100,
           backgroundColor: "#fff",
-          backgroundImage: isMert || isAlmira
-            ? "url('https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/2560px-Flag_of_the_United_Kingdom.svg.png')"
-            : "none",
+          backgroundImage:
+            isMert || isAlmira
+              ? "url('https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/2560px-Flag_of_the_United_Kingdom.svg.png')"
+              : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: "12px",
@@ -354,11 +355,12 @@ export default function Home() {
                 fontSize: "28px",
                 fontWeight: "bold",
                 margin: "0",
-                color: isMert || isAlmira
-                  ? "#000"
-                  : item.status === "left."
-                    ? "#28a745"
-                    : "#dc3545",
+                color:
+                  isMert || isAlmira
+                    ? "#000"
+                    : item.status === "left."
+                      ? "#28a745"
+                      : "#dc3545",
               }}
             >
               {item.daysLeft !== null
