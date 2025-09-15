@@ -1,5 +1,5 @@
 const quotes = require("../public/quotes.json");
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import styles from "../styles/Home.module.css";
 
 // Modularized: calculateDaysLeft moved to top-level
@@ -48,6 +48,11 @@ const getCountdownData = () => {
       date: new Date("2024-03-05"),
       label: "ALMIRA BIRTHDAY",
     },
+      {
+          name: "XXXX",
+          date: new Date("2026-04-22"),
+          label: "XXXX",
+      },
   ];
   return dates.map(({ name, date, label }) => ({
     name,
