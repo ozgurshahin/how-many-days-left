@@ -33,13 +33,13 @@ const getCountdownData = () => {
   const dates = [
     { name: "OZGUR", date: new Date("2026-03-03"), label: "DEMIR" },
     {
-      name: "Mert’s British now!",
+      name: "Mert's British now!",
       date: new Date("2025-08-08"),
       label: "MERT",
     },
     { name: "OGUZHAN", date: new Date("2026-04-16"), label: "ELGORMUS" },
     {
-      name: "Almira’s British now!",
+      name: "Almira's British now!",
       date: new Date("2025-08-15"),
       label: "ALIMRA PASAPORT",
     },
@@ -49,29 +49,39 @@ const getCountdownData = () => {
       label: "ALMIRA BIRTHDAY",
     },
     {
-      name: "XXXX",
-      date: new Date("2026-04-22"),
-      label: "XXXX",
+      name: "??",
+      date: new Date("2025-11-28"),
+      label: "??",
     },
     {
-      name: "MERT_XXXX",
+      name: "XX",
+      date: new Date("2026-04-22"),
+      label: "XX",
+    },
+    {
+      name: "XY",
       date: new Date("2026-05-06"),
-      label: "MERT_XXXX",
+      label: "XY",
     },
   ];
-  return dates.map(({ name, date, label }) => ({
+  const result = dates.map(({ name, date, label }) => ({
     name,
+    date,
     ...calculateDaysLeft(date, label),
   }));
+
+  // Tarihe göre sırala (en yakın tarih önce)
+  return result.sort((a, b) => {
+    if (a.date === null) return 1;
+    if (b.date === null) return -1;
+    return a.date - b.date;
+  });
 };
 
 export default function Home() {
   const [countdownData, setCountdownData] = useState([]);
-  const [positions, setPositions] = useState({});
-  const [draggingId, setDraggingId] = useState(null);
   const [quote, setQuote] = useState("");
   const [acknowledged, setAcknowledged] = useState(false);
-  const [liveMsg, setLiveMsg] = useState("");
 
   useEffect(() => {
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -79,128 +89,7 @@ export default function Home() {
 
     const data = getCountdownData();
     setCountdownData(data);
-
-    const initialPositions = {};
-    const containerWidth = window.innerWidth;
-    const containerHeight = window.innerHeight;
-
-    const cardWidth = containerWidth < 600 ? 240 : 300;
-    const cardHeight = containerWidth < 600 ? 140 : 180;
-    const padding = 20;
-
-    const placedCards = [];
-
-    data.forEach((item) => {
-      let x, y;
-      let overlaps;
-      let attempts = 0;
-
-      do {
-        x = Math.floor(Math.random() * (containerWidth - cardWidth - padding));
-        y = Math.floor(
-          Math.random() * (containerHeight - cardHeight - padding),
-        );
-        overlaps = placedCards.some(
-          (pos) =>
-            Math.abs(pos.x - x) < cardWidth + padding &&
-            Math.abs(pos.y - y) < cardHeight + padding,
-        );
-        attempts++;
-      } while (overlaps && attempts < 200);
-
-      placedCards.push({ x, y });
-      initialPositions[item.name] = { x, y };
-    });
-
-    setPositions(initialPositions);
   }, []);
-
-  // ---- Mouse/Touch drag helpers + live region updates ----
-  const startDrag = (id) => {
-    setDraggingId(id);
-    setLiveMsg(`${id} selected for dragging`);
-  };
-  const endDrag = () => {
-    if (draggingId) setLiveMsg(`Dropped ${draggingId}`);
-    setDraggingId(null);
-  };
-
-  const handleMouseDown = (e, id) => {
-    startDrag(id);
-  };
-  const handleTouchStart = (e, id) => {
-    startDrag(id);
-  };
-  const handleMouseMove = (e) => {
-    if (draggingId !== null) {
-      setPositions((prev) => ({
-        ...prev,
-        [draggingId]: {
-          x: e.clientX - 140,
-          y: e.clientY - 70,
-        },
-      }));
-    }
-  };
-  const handleTouchMove = (e) => {
-    if (draggingId !== null) {
-      const touch = e.touches[0];
-      setPositions((prev) => ({
-        ...prev,
-        [draggingId]: {
-          x: touch.clientX - 140,
-          y: touch.clientY - 70,
-        },
-      }));
-    }
-  };
-  const handleMouseUp = () => endDrag();
-  const handleTouchEnd = () => endDrag();
-
-  // ---- Keyboard accessibility ----
-  const handleKeyDown = (e, id) => {
-    const keys = [
-      "ArrowUp",
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowRight",
-      " ",
-      "Enter",
-      "Escape",
-    ];
-    if (keys.includes(e.key)) e.preventDefault();
-
-    const step = e.shiftKey ? 1 : 10;
-    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
-      setPositions((prev) => {
-        const current = prev[id] ?? { x: 100, y: 100 };
-        switch (e.key) {
-          case "ArrowUp":
-            return { ...prev, [id]: { ...current, y: current.y - step } };
-          case "ArrowDown":
-            return { ...prev, [id]: { ...current, y: current.y + step } };
-          case "ArrowLeft":
-            return { ...prev, [id]: { ...current, x: current.x - step } };
-          case "ArrowRight":
-            return { ...prev, [id]: { ...current, x: current.x + step } };
-          default:
-            return prev;
-        }
-      });
-    }
-
-    if (e.key === " " || e.key === "Enter") {
-      setDraggingId((curr) => {
-        const next = curr === id ? null : id;
-        setLiveMsg(next ? `${id} selected for dragging` : `Dropped ${id}`);
-        return next;
-      });
-    }
-    if (e.key === "Escape") {
-      setLiveMsg(`Cancelled dragging ${id}`);
-      setDraggingId(null);
-    }
-  };
 
   if (!acknowledged) {
     return (
@@ -272,39 +161,22 @@ export default function Home() {
   return (
     <div
       className={styles.container}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
       style={{
-        position: "relative",
-        height: "100vh",
+        minHeight: "100vh",
         padding: "40px",
         fontFamily: "monospace",
         backgroundColor: "#f4f4f4",
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "20px",
+        justifyContent: "center",
+        alignContent: "flex-start",
       }}
     >
-      {/* SR live region */}
-      <div
-        aria-live="polite"
-        style={{
-          position: "absolute",
-          width: 1,
-          height: 1,
-          overflow: "hidden",
-          clip: "rect(1px, 1px, 1px, 1px)",
-        }}
-      >
-        {liveMsg}
-      </div>
-
-      {countdownData.map((item, index) => {
-        const isMert = item.name === "Mert’s British now!";
-        const isAlmira = item.name === "Almira’s British now!";
+      {countdownData.map((item) => {
+        const isMert = item.name === "Mert's British now!";
+        const isAlmira = item.name === "Almira's British now!";
         const baseCardStyle = {
-          position: "absolute",
-          left: positions[item.name]?.x || 100,
-          top: positions[item.name]?.y || index * 160 + 100,
           backgroundColor: "#fff",
           backgroundImage:
             isMert || isAlmira
@@ -314,46 +186,24 @@ export default function Home() {
           backgroundPosition: "center",
           borderRadius: "12px",
           padding: "20px",
-          minWidth: window.innerWidth < 600 ? "220px" : "280px",
+          width: window.innerWidth < 600 ? "220px" : "280px",
           fontSize: "16px",
           boxShadow: "0 6px 12px rgba(0, 0, 0, 0.12)",
           textAlign: "center",
-          cursor: "grab",
-          touchAction: "none",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           height: "180px",
-          color: "#000", // tüm yazılar siyah
-          outline: "none",
+          color: "#000",
         };
 
         return (
-          <div
-            key={item.name}
-            role="button"
-            tabIndex={0}
-            aria-label={`Drag ${item.name} card`}
-            aria-roledescription="draggable card"
-            aria-pressed={draggingId === item.name}
-            onKeyDown={(e) => handleKeyDown(e, item.name)}
-            onMouseDown={(e) => handleMouseDown(e, item.name)}
-            onTouchStart={(e) => handleTouchStart(e, item.name)}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            onFocus={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 0 3px rgba(0,0,0,0.25)";
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.boxShadow = "0 6px 12px rgba(0,0,0,0.12)";
-            }}
-            style={baseCardStyle}
-          >
+          <div key={item.name} style={baseCardStyle}>
             <h2
               style={{
                 fontSize: "20px",
-                margin: "0 0 -8px 0", // iki satır arası dar
+                margin: "0 0 -8px 0",
                 fontWeight: "600",
                 color: isMert || isAlmira ? "#000" : "#333",
               }}
