@@ -1,43 +1,43 @@
 const quotes = require("../public/quotes.json");
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 const normalizeDate = (date) =>
-    new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
 const getYearsMonthsDaysDiff = (startDate, endDate) => {
-    const start = normalizeDate(startDate);
-    const end = normalizeDate(endDate);
-    let years = end.getFullYear() - start.getFullYear();
-    let months = end.getMonth() - start.getMonth();
-    let days = end.getDate() - start.getDate();
+  const start = normalizeDate(startDate);
+  const end = normalizeDate(endDate);
+  let years = end.getFullYear() - start.getFullYear();
+  let months = end.getMonth() - start.getMonth();
+  let days = end.getDate() - start.getDate();
 
-    if (days < 0) {
-        months -= 1;
-        const prevMonth = end.getMonth() - 1 < 0 ? 11 : end.getMonth() - 1;
-        const prevMonthYear =
-            end.getMonth() - 1 < 0 ? end.getFullYear() - 1 : end.getFullYear();
-        days += daysInMonth(prevMonthYear, prevMonth);
-    }
+  if (days < 0) {
+    months -= 1;
+    const prevMonth = end.getMonth() - 1 < 0 ? 11 : end.getMonth() - 1;
+    const prevMonthYear =
+      end.getMonth() - 1 < 0 ? end.getFullYear() - 1 : end.getFullYear();
+    days += daysInMonth(prevMonthYear, prevMonth);
+  }
 
-    if (months < 0) {
-        years -= 1;
-        months += 12;
-    }
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
 
-    return {years, months, days};
+  return { years, months, days };
 };
 
 const formatYilAyGun = (date, status) => {
-    const today = new Date();
-    const isFuture = normalizeDate(date) > normalizeDate(today);
-    const start = isFuture ? today : date;
-    const end = isFuture ? date : today;
-    const {years, months, days} = getYearsMonthsDaysDiff(start, end);
-    const suffix = status ? ` ${status}` : "";
-    return `${years} yil ${months} ay ${days} gun${suffix}`;
+  const today = new Date();
+  const isFuture = normalizeDate(date) > normalizeDate(today);
+  const start = isFuture ? today : date;
+  const end = isFuture ? date : today;
+  const { years, months, days } = getYearsMonthsDaysDiff(start, end);
+  const suffix = status ? ` ${status}` : "";
+  return `${years} yil ${months} ay ${days} gun${suffix}`;
 };
 
 // Modularized: calculateDaysLeft moved to top-level
