@@ -1,6 +1,44 @@
 const quotes = require("../public/quotes.json");
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import styles from "../styles/Home.module.css";
+
+const normalizeDate = (date) =>
+    new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+
+const getYearsMonthsDaysDiff = (startDate, endDate) => {
+    const start = normalizeDate(startDate);
+    const end = normalizeDate(endDate);
+    let years = end.getFullYear() - start.getFullYear();
+    let months = end.getMonth() - start.getMonth();
+    let days = end.getDate() - start.getDate();
+
+    if (days < 0) {
+        months -= 1;
+        const prevMonth = end.getMonth() - 1 < 0 ? 11 : end.getMonth() - 1;
+        const prevMonthYear =
+            end.getMonth() - 1 < 0 ? end.getFullYear() - 1 : end.getFullYear();
+        days += daysInMonth(prevMonthYear, prevMonth);
+    }
+
+    if (months < 0) {
+        years -= 1;
+        months += 12;
+    }
+
+    return {years, months, days};
+};
+
+const formatYilAyGun = (date, status) => {
+    const today = new Date();
+    const isFuture = normalizeDate(date) > normalizeDate(today);
+    const start = isFuture ? today : date;
+    const end = isFuture ? date : today;
+    const {years, months, days} = getYearsMonthsDaysDiff(start, end);
+    const suffix = status ? ` ${status}` : "";
+    return `${years} yil ${months} ay ${days} gun${suffix}`;
+};
 
 // Modularized: calculateDaysLeft moved to top-level
 const calculateDaysLeft = (date, name) => {
@@ -94,7 +132,7 @@ export default function Home() {
   if (!acknowledged) {
     return (
       <>
-        <style jsx global>{`
+        <style>{`
           @keyframes fadeIn {
             from {
               opacity: 0;
@@ -135,7 +173,7 @@ export default function Home() {
               animation: "fadeIn 1s ease-in",
             }}
           >
-            {quote ? quote : "Yükleniyor..."}
+            {quote || "Yükleniyor..."}
           </div>
           <button
             onClick={() => setAcknowledged(true)}
@@ -176,6 +214,20 @@ export default function Home() {
       {countdownData.map((item) => {
         const isMert = item.name === "Mert's British now!";
         const isAlmira = item.name === "Almira's British now!";
+        const isAlmiraBirthday = item.name === "ALMIRA BIRTHDAY";
+        let statusColor = "#dc3545";
+        if (isMert || isAlmira) {
+          statusColor = "#000";
+        } else if (item.status === "left.") {
+          statusColor = "#28a745";
+        }
+
+        let valueText = item.status;
+        if (item.daysLeft != null) {
+          valueText = isAlmiraBirthday
+            ? formatYilAyGun(item.date, item.status)
+            : `${Math.abs(item.daysLeft)} days ${item.status}`;
+        }
         const baseCardStyle = {
           backgroundColor: "#fff",
           backgroundImage:
@@ -215,17 +267,10 @@ export default function Home() {
                 fontSize: "28px",
                 fontWeight: "bold",
                 margin: "0",
-                color:
-                  isMert || isAlmira
-                    ? "#000"
-                    : item.status === "left."
-                      ? "#28a745"
-                      : "#dc3545",
+                color: statusColor,
               }}
             >
-              {item.daysLeft !== null
-                ? `${Math.abs(item.daysLeft)} days ${item.status}`
-                : item.status}
+              {valueText}
             </h1>
           </div>
         );
