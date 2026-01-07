@@ -75,7 +75,7 @@ const getCountdownData = () => {
       date: new Date("2025-08-08"),
       label: "MERT",
     },
-    { name: "OGUZHAN", date: new Date("2026-04-16"), label: "ELGORMUS" },
+    { name: "OGUZHAN", date: new Date("2026-09-17"), label: "ELGORMUS" },
     {
       name: "Almira's British now!",
       date: new Date("2025-08-15"),
