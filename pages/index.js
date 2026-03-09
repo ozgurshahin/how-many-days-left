@@ -69,7 +69,7 @@ const calculateDaysLeft = (date, name) => {
 // Renamed and refactored: getCountdownData
 const getCountdownData = () => {
   const dates = [
-    { name: "OZGUR", date: new Date("2026-03-03"), label: "DEMIR" },
+    { name: "OZGUR", date: new Date("2026-03-09"), label: "DEMIR" },
     {
       name: "Mert's British now!",
       date: new Date("2025-08-08"),
